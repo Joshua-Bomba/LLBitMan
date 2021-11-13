@@ -1,6 +1,7 @@
 ﻿using LLDataMan;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,8 +11,10 @@ namespace LLBitManTester
 {
     class Program
     {
-        private const uint THREAD_SPAWN = 1;
-        private const long END = 1000;
+        private const uint THREAD_SPAWN = 8;
+        private const ulong END_TIMER_POINT = 100000000000;
+        private const ulong END = ulong.MaxValue;
+
 
 
         class Assert
@@ -129,9 +132,26 @@ namespace LLBitManTester
             }
         }
 
-        static void ThreadProcesses(int start)
+        static void ThreadProcessesTimer()
         {
-            for (ulong i = (ulong)start; i <= END; i += THREAD_SPAWN)
+            Stopwatch stopWatch = new Stopwatch();
+            ulong i = 0;
+            stopWatch.Start();
+            while (i <= END_TIMER_POINT)
+            {
+
+                i += THREAD_SPAWN;
+            }
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            Console.WriteLine("RunTime Till End_Point " + ts.TotalMilliseconds + "ms");
+            Console.WriteLine("Continue with normal run");
+            ThreadProcesses(i);
+        }
+
+        static void ThreadProcesses(ulong start)
+        {
+            for (ulong i = start; i <= END; i += THREAD_SPAWN)
             {
                 TestValue(i);
             }
@@ -139,14 +159,24 @@ namespace LLBitManTester
 
         static void Main(string[] args)
         {
-
             Thread[] threads = new Thread[THREAD_SPAWN];
             for (int i = 0; i < threads.Length; i++)
             {
-                threads[i] = new Thread(new ThreadStart(() => ThreadProcesses(i)));
+                if(i == 0)
+                {
+                    threads[i] = new Thread(new ThreadStart(ThreadProcessesTimer));
+                }
+                else
+                {
+                    ulong index = (ulong)i;
+                    threads[i] = new Thread(new ThreadStart(()=> ThreadProcesses(index)));
+                }
+
             }
 
-            for(int i = 0;i < threads.Length;i++)
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            for (int i = 0;i < threads.Length;i++)
             {
                 threads[i].Start();
             }
@@ -156,7 +186,12 @@ namespace LLBitManTester
                 threads[i].Join();
             }
 
-
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+            ts.Hours, ts.Minutes, ts.Seconds,
+            ts.Milliseconds / 10);
+            Console.WriteLine("Full Run Time " + elapsedTime);
+            stopWatch.Stop();
         }
     }
 }
