@@ -50,5 +50,11 @@
   <ItemGroup>
     <None Include="app.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LLBitMan\LLBitMan.csproj">
+      <Project>{48afaef3-8153-41ef-b8ee-5260bd96e663}</Project>
+      <Name>LLBitMan</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
