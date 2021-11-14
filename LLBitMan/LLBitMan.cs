@@ -247,7 +247,7 @@ namespace LLDataMan
             output = default(double);
             return false;
         }
-        public enum SupportedPrimativeTypes
+        public enum SupportedPrimitiveTypes
         {
             GUID,
             BYTE,
@@ -265,53 +265,53 @@ namespace LLDataMan
             BOOL,
         }
 
-        public static readonly Dictionary<Type, SupportedPrimativeTypes> TYPE_MAP = new Dictionary<Type, SupportedPrimativeTypes>
+        public static readonly Dictionary<Type, SupportedPrimitiveTypes> TYPE_MAP = new Dictionary<Type, SupportedPrimitiveTypes>
         {
-            {typeof(Guid),SupportedPrimativeTypes.GUID},
-            {typeof(byte),SupportedPrimativeTypes.BYTE},
-            {typeof(sbyte),SupportedPrimativeTypes.SBYTE},
-            {typeof(char),SupportedPrimativeTypes.CHAR},
-            {typeof(decimal),SupportedPrimativeTypes.DEC},
-            {typeof(float),SupportedPrimativeTypes.FLOAT},
-            {typeof(int),SupportedPrimativeTypes.INT},
-            {typeof(uint),SupportedPrimativeTypes.UINT},
-            {typeof(long),SupportedPrimativeTypes.LONG},
-            {typeof(ulong),SupportedPrimativeTypes.ULONG},
-            {typeof(double),SupportedPrimativeTypes.DOUBLE},
-            {typeof(short),SupportedPrimativeTypes.SHORT},
-            {typeof(ushort),SupportedPrimativeTypes.USHORT},
-            {typeof(bool), SupportedPrimativeTypes.BOOL }
+            {typeof(Guid),SupportedPrimitiveTypes.GUID},
+            {typeof(byte),SupportedPrimitiveTypes.BYTE},
+            {typeof(sbyte),SupportedPrimitiveTypes.SBYTE},
+            {typeof(char),SupportedPrimitiveTypes.CHAR},
+            {typeof(decimal),SupportedPrimitiveTypes.DEC},
+            {typeof(float),SupportedPrimitiveTypes.FLOAT},
+            {typeof(int),SupportedPrimitiveTypes.INT},
+            {typeof(uint),SupportedPrimitiveTypes.UINT},
+            {typeof(long),SupportedPrimitiveTypes.LONG},
+            {typeof(ulong),SupportedPrimitiveTypes.ULONG},
+            {typeof(double),SupportedPrimitiveTypes.DOUBLE},
+            {typeof(short),SupportedPrimitiveTypes.SHORT},
+            {typeof(ushort),SupportedPrimitiveTypes.USHORT},
+            {typeof(bool), SupportedPrimitiveTypes.BOOL }
         };
 
-        public static bool TryGetPrimativeValue<TResult>(byte[] data, out TResult t) where TResult : struct
+        public static bool TryGetPrimitiveValue<TResult>(byte[] data, out TResult t) where TResult : struct
         {
 
-            if (data != null && TYPE_MAP.TryGetValue(typeof(TResult), out SupportedPrimativeTypes type))
+            if (data != null && TYPE_MAP.TryGetValue(typeof(TResult), out SupportedPrimitiveTypes type))
             {
                 switch (type)
                 {
-                    case SupportedPrimativeTypes.GUID:
+                    case SupportedPrimitiveTypes.GUID:
                         if (data.TryReinterpretCast(out Guid g))
                         {
                             t = (TResult)(g as IFormattable);
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.BYTE:
+                    case SupportedPrimitiveTypes.BYTE:
                         if (data.TryReinterpretCast(out byte r))
                         {
                             t = (TResult)(r as IConvertible);
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.SBYTE:
+                    case SupportedPrimitiveTypes.SBYTE:
                         if (data.TryReinterpretCast(out sbyte sb))
                         {
                             t = (TResult)(sb as IConvertible);
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.CHAR:
+                    case SupportedPrimitiveTypes.CHAR:
                         if (data.TryReinterpretCast(out char rc))
                         {
                             IConvertible c = rc;
@@ -319,7 +319,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.DEC:
+                    case SupportedPrimitiveTypes.DEC:
                         if (data.TryReinterpretCast(out decimal dec))
                         {
                             IConvertible c = dec;
@@ -327,7 +327,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.FLOAT:
+                    case SupportedPrimitiveTypes.FLOAT:
                         if (data.TryReinterpretCast(out float f))
                         {
                             IConvertible flt = f;
@@ -335,7 +335,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.INT:
+                    case SupportedPrimitiveTypes.INT:
                         if (data.TryReinterpretCast(out int intt))
                         {
                             IConvertible dd = intt;
@@ -343,7 +343,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.UINT:
+                    case SupportedPrimitiveTypes.UINT:
                         if (data.TryReinterpretCast(out uint uintv))
                         {
                             IConvertible dd = uintv;
@@ -351,7 +351,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.LONG:
+                    case SupportedPrimitiveTypes.LONG:
                         if (data.TryReinterpretCast(out long l))
                         {
                             IConvertible ll = l;
@@ -359,7 +359,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.ULONG:
+                    case SupportedPrimitiveTypes.ULONG:
                         if (data.TryReinterpretCast(out ulong ul))
                         {
                             IConvertible uul = ul;
@@ -367,7 +367,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.DOUBLE:
+                    case SupportedPrimitiveTypes.DOUBLE:
                         if (data.TryReinterpretCast(out double dl))
                         {
                             IConvertible ddl = dl;
@@ -375,7 +375,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.SHORT:
+                    case SupportedPrimitiveTypes.SHORT:
                         if (data.TryReinterpretCast(out short s))
                         {
                             IConvertible ss = s;
@@ -383,7 +383,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.USHORT:
+                    case SupportedPrimitiveTypes.USHORT:
                         if (data.TryReinterpretCast(out ushort us))
                         {
                             IConvertible uus = us;
@@ -391,7 +391,7 @@ namespace LLDataMan
                             return true;
                         }
                         break;
-                    case SupportedPrimativeTypes.BOOL:
+                    case SupportedPrimitiveTypes.BOOL:
                         if(data.TryReinterpretCast(out bool b))
                         {
                             IConvertible bb = b;

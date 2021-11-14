@@ -43,7 +43,7 @@ namespace LLBitManTester
                 bool bl = index != 0;
                 byte[] bla = bl.ToByteArray();
 #if GENERIC_TEST
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(bla, out bool rbl));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(bla, out bool rbl));
 #else
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(bla, out bool rbl));
 #endif
@@ -60,9 +60,9 @@ namespace LLBitManTester
                 byte[] sba = sb.ToByteArray();
                 byte[] ga = g.ToByteArray();
 #if GENERIC_TEST
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(ga, out Guid rg));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(ba, out byte rb));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(sba, out sbyte rsb));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ga, out Guid rg));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ba, out byte rb));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(sba, out sbyte rsb));
 #else
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(ga, out Guid rg));
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(ba, out byte rb));
@@ -83,9 +83,9 @@ namespace LLBitManTester
                 byte[] ca = c.ToByteArray();
 
 #if GENERIC_TEST
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(sa, out short ra));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(usa, out ushort rus));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(ca, out char rc));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(sa, out short ra));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(usa, out ushort rus));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ca, out char rc));
 #else
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(sa, out short ra));
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(usa, out ushort rus));
@@ -105,9 +105,9 @@ namespace LLBitManTester
                 byte[] uia = ui.ToByteArray();
 
 #if GENERIC_TEST
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(fa, out float rf));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(ia, out int ri));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(uia, out uint rui));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(fa, out float rf));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ia, out int ri));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(uia, out uint rui));
 #else
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(fa, out float rf));
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(ia, out int ri));
@@ -132,10 +132,10 @@ namespace LLBitManTester
                 byte[] ula = ul.ToByteArray();
                 byte[] dla = dl.ToByteArray();
 #if GENERIC_TEST
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(da, out decimal rd));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(la, out long rl));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(ula, out ulong rul));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimativeValue(dla, out double rdl));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(da, out decimal rd));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(la, out long rl));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ula, out ulong rul));
+                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(dla, out double rdl));
 #else
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(da, out decimal rd));
                 Assert.IsTrue(LLDataMan.LLBitMan.TryReinterpretCast(la, out long rl));
