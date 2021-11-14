@@ -13,11 +13,9 @@ namespace LLBitManTester
     class Program
     {
         private const uint THREAD_SPAWN_DEFAULT = 8;
-        private static uint FIRST_INCREMENT = THREAD_SPAWN_DEFAULT;
-        private static uint SECOND_INCREMENT = THREAD_SPAWN_DEFAULT * 5;
+        private static uint INCREMENT = THREAD_SPAWN_DEFAULT;
         private const ulong INTERVAL = 100000000;
         private const ulong UINT_END = uint.MaxValue;
-        private static ulong ULONG_END_MARGIN = ulong.MaxValue - SECOND_INCREMENT;
 
         class Assert
         {
@@ -151,56 +149,60 @@ namespace LLBitManTester
             }
         }
 
+        static void PastUIntMax()
+        {
+            ulong endPoint = ulong.MaxValue;
+            ulong i = uint.MaxValue;
+            while (i < endPoint)
+            {
+                i = (i << 4);
+                for (byte k = 0; k < 15; k++)
+                {
+                    TestValue(i);
+                    i += 1;
+                }
+                TestValue(i);
+            }
+        }
+
         static void ThreadProcessesTimer()
         {
             Stopwatch stopWatch = new Stopwatch();
             ulong i = 0;
             ulong endTimerPoint = INTERVAL;
-            uint increment = FIRST_INCREMENT;
             ulong endPoint = UINT_END;
-            while(i <= ULONG_END_MARGIN)
+            Console.WriteLine("starting point of " + i + " with increment of " + INCREMENT + " Endpoint is " + endPoint);
+            while (i <= endPoint)
             {
-                Console.WriteLine("starting point of " + i + " with increment of " + increment + " Endpoint is " + endPoint);
-                while (i <= endPoint)
+                stopWatch.Start();
+                while (i <= endTimerPoint)
                 {
-                    stopWatch.Start();
-                    while (i <= endTimerPoint)
-                    {
-                        TestValue(i);
-                        i += increment;
-                    }
-
-                    endTimerPoint += INTERVAL;
-                    if (endTimerPoint > endPoint)
-                    {
-                        endTimerPoint = endPoint;
-                    }
-                    stopWatch.Stop();
-                    TimeSpan ts = stopWatch.Elapsed;
-                    Console.WriteLine("RunTime Till INTERVAL of " + i + " took " + ts.TotalMilliseconds + "ms");
-                    stopWatch.Reset();
+                    TestValue(i);
+                    i += INCREMENT;
                 }
-                endPoint = ULONG_END_MARGIN;
-                increment = SECOND_INCREMENT;
+
+                endTimerPoint += INTERVAL;
+                if (endTimerPoint > endPoint)
+                {
+                    endTimerPoint = endPoint;
+                }
+                stopWatch.Stop();
+                TimeSpan ts = stopWatch.Elapsed;
+                Console.WriteLine("RunTime Till INTERVAL of " + i + " took " + ts.TotalMilliseconds + "ms");
+                stopWatch.Reset();
             }
-           
-           
+
         }
 
         static void ThreadProcesses(ulong start)
         {
             ulong i = 0;
-            uint increment = FIRST_INCREMENT;
+            uint increment = INCREMENT;
             ulong endPoint = UINT_END;
-            while (i <= ULONG_END_MARGIN)
+            while (i <= endPoint)
             {
-                while (i <= endPoint)
-                {
-                    TestValue(i);
-                    i += increment;
-                }
-                endPoint = ULONG_END_MARGIN;
-                increment = SECOND_INCREMENT;
+                TestValue(i);
+                i += increment;
             }
         }
 
@@ -212,9 +214,7 @@ namespace LLBitManTester
                 if(uint.TryParse(args[0],out uint c))
                 {
                     cores = c;
-                    FIRST_INCREMENT = c;
-                    SECOND_INCREMENT = FIRST_INCREMENT * 5;
-                    ULONG_END_MARGIN = ulong.MaxValue - c;
+                    INCREMENT = c;
                 }
             }
             Console.WriteLine("Threads Creating: " + cores);
@@ -239,6 +239,8 @@ namespace LLBitManTester
             {
                 threads[i].Start();
             }
+
+            PastUIntMax();
 
             for(int i = 0;i < threads.Length;i++)
             {
