@@ -12,11 +12,12 @@ namespace LLBitManTester
 {
     class Program
     {
-        private const uint THREAD_SPAWN = 8;
-        private const ulong END_TIMER_POINT = 100000000;
-        private const ulong END = ulong.MaxValue;
-
-
+        private const uint THREAD_SPAWN_DEFAULT = 8;
+        private static uint FIRST_INCREMENT = THREAD_SPAWN_DEFAULT;
+        private static uint SECOND_INCREMENT = THREAD_SPAWN_DEFAULT * 5;
+        private const ulong INTERVAL = 100000000;
+        private const ulong UINT_END = uint.MaxValue;
+        private static ulong ULONG_END_MARGIN = ulong.MaxValue - SECOND_INCREMENT;
 
         class Assert
         {
@@ -154,36 +155,70 @@ namespace LLBitManTester
         {
             Stopwatch stopWatch = new Stopwatch();
             ulong i = 0;
-            ulong endTimerPoint = END_TIMER_POINT;
-            while(i <= END)
+            ulong endTimerPoint = INTERVAL;
+            uint increment = FIRST_INCREMENT;
+            ulong endPoint = UINT_END;
+            while(i <= ULONG_END_MARGIN)
             {
-                stopWatch.Start();
-                while (i <= endTimerPoint)
+                Console.WriteLine("starting point of " + i + " with increment of " + increment + " Endpoint is " + endPoint);
+                while (i <= endPoint)
                 {
-                    TestValue(i);
-                    i += THREAD_SPAWN;
+                    stopWatch.Start();
+                    while (i <= endTimerPoint)
+                    {
+                        TestValue(i);
+                        i += increment;
+                    }
+
+                    endTimerPoint += INTERVAL;
+                    if (endTimerPoint > UINT_END)
+                    {
+                        endTimerPoint = UINT_END;
+                    }
+                    stopWatch.Stop();
+                    TimeSpan ts = stopWatch.Elapsed;
+                    Console.WriteLine("RunTime Till INTERVAL of " + i + " took " + ts.TotalMilliseconds + "ms");
+                    stopWatch.Reset();
                 }
-                endTimerPoint += END_TIMER_POINT;
-                stopWatch.Stop();
-                TimeSpan ts = stopWatch.Elapsed;
-                Console.WriteLine("RunTime Till End_Point " + ts.TotalMilliseconds + "ms");
-                Console.WriteLine("Continue with normal run");
-                stopWatch.Reset();
+                endPoint = ULONG_END_MARGIN;
+                increment = SECOND_INCREMENT;
             }
+           
            
         }
 
         static void ThreadProcesses(ulong start)
         {
-            for (ulong i = start; i <= END; i += THREAD_SPAWN)
+            ulong i = 0;
+            uint increment = FIRST_INCREMENT;
+            ulong endPoint = UINT_END;
+            while (i <= ULONG_END_MARGIN)
             {
-                TestValue(i);
+                while (i <= endPoint)
+                {
+                    TestValue(i);
+                    i += increment;
+                }
+                endPoint = ULONG_END_MARGIN;
+                increment = SECOND_INCREMENT;
             }
         }
 
         static void Main(string[] args)
         {
-            Thread[] threads = new Thread[THREAD_SPAWN];
+            uint cores = THREAD_SPAWN_DEFAULT;
+            if (args.Length > 0)
+            {
+                if(uint.TryParse(args[0],out uint c))
+                {
+                    cores = c;
+                    FIRST_INCREMENT = c;
+                    SECOND_INCREMENT = FIRST_INCREMENT * 5;
+                    ULONG_END_MARGIN = ulong.MaxValue - c;
+                }
+            }
+            Console.WriteLine("Threads Creating: " + cores);
+            Thread[] threads = new Thread[cores];
             for (int i = 0; i < threads.Length; i++)
             {
                 if(i == 0)
