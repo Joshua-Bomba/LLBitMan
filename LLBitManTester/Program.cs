@@ -171,9 +171,9 @@ namespace LLBitManTester
                     }
 
                     endTimerPoint += INTERVAL;
-                    if (endTimerPoint > UINT_END)
+                    if (endTimerPoint > endPoint)
                     {
-                        endTimerPoint = UINT_END;
+                        endTimerPoint = endPoint;
                     }
                     stopWatch.Stop();
                     TimeSpan ts = stopWatch.Elapsed;
