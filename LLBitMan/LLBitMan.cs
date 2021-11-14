@@ -50,7 +50,7 @@ namespace LLDataMan
 
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data,out decimal dec)
+        public static unsafe bool TryReinterpretCast(this byte[] data,out decimal dec)
         {
             if (data != null && data.Length == 128)
             {
@@ -73,23 +73,23 @@ namespace LLDataMan
             return false;
         }
 
-        public static bool TryToPrimative(this byte data, out bool b)
+        public static bool TryReinterpretCast(this byte data, out bool b)
         {
             b = Convert.ToBoolean(data);
             return true;
         }
 
-        public static bool TryToPrimative(this byte[]data, out bool b)
+        public static bool TryReinterpretCast(this byte[]data, out bool b)
         {
             if(data != null && sizeof(byte) == data.Length)
             {
-                return data[0].TryToPrimative(out b);
+                return data[0].TryReinterpretCast(out b);
             }
             b = default(bool);
             return false;
         }
 
-        public static bool TryToPrimative(this byte[] data, out byte b) 
+        public static bool TryReinterpretCast(this byte[] data, out byte b) 
         {
             if (data != null&&sizeof(byte) == data.Length)
             {
@@ -100,7 +100,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static bool TryToPrimative(this byte[] data, out sbyte b)
+        public static bool TryReinterpretCast(this byte[] data, out sbyte b)
         {
             if (data != null&&sizeof(sbyte) == data.Length)
             {
@@ -111,7 +111,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data,out char output)
+        public static unsafe bool TryReinterpretCast(this byte[] data,out char output)
         {
             if(data != null&&sizeof(char) == data.Length)
             {
@@ -125,7 +125,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out float output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out float output)
         {
             if(data != null&&sizeof(float) == data.Length)
             {
@@ -139,7 +139,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out int output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out int output)
         {
             if(data != null&&sizeof(int) ==data.Length)
             {
@@ -153,7 +153,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out uint output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out uint output)
         {
             if(data != null&&sizeof(uint) == data.Length)
             {
@@ -167,7 +167,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out long output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out long output)
         {
             if(data != null&&sizeof(long) == data.Length)
             {
@@ -181,7 +181,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out ulong output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out ulong output)
         {
             if(data != null&&sizeof(ulong) == data.Length)
             {
@@ -195,7 +195,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out short output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out short output)
         {
             if(data != null&&sizeof(short) == data.Length)
             {
@@ -209,7 +209,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out ushort output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out ushort output)
         {
             if(data != null&&sizeof(ushort) == data.Length)
             {
@@ -223,7 +223,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static bool TryToPrimative(this byte[] data, out Guid output)
+        public static bool TryReinterpretCast(this byte[] data, out Guid output)
         {
             if(data != null&&data.Length == 16)
             {
@@ -234,7 +234,7 @@ namespace LLDataMan
             return false;
         }
 
-        public static unsafe bool TryToPrimative(this byte[] data, out double output)
+        public static unsafe bool TryReinterpretCast(this byte[] data, out double output)
         {
             if(data != null&&sizeof(double) == data.Length)
             {
@@ -291,28 +291,28 @@ namespace LLDataMan
                 switch (type)
                 {
                     case SupportedPrimativeTypes.GUID:
-                        if (data.TryToPrimative(out Guid g))
+                        if (data.TryReinterpretCast(out Guid g))
                         {
                             t = (TResult)(g as IFormattable);
                             return true;
                         }
                         break;
                     case SupportedPrimativeTypes.BYTE:
-                        if (data.TryToPrimative(out byte r))
+                        if (data.TryReinterpretCast(out byte r))
                         {
                             t = (TResult)(r as IConvertible);
                             return true;
                         }
                         break;
                     case SupportedPrimativeTypes.SBYTE:
-                        if (data.TryToPrimative(out sbyte sb))
+                        if (data.TryReinterpretCast(out sbyte sb))
                         {
                             t = (TResult)(sb as IConvertible);
                             return true;
                         }
                         break;
                     case SupportedPrimativeTypes.CHAR:
-                        if (data.TryToPrimative(out char rc))
+                        if (data.TryReinterpretCast(out char rc))
                         {
                             IConvertible c = rc;
                             t = (TResult)c;
@@ -320,7 +320,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.DEC:
-                        if (data.TryToPrimative(out decimal dec))
+                        if (data.TryReinterpretCast(out decimal dec))
                         {
                             IConvertible c = dec;
                             t = (TResult)c;
@@ -328,7 +328,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.FLOAT:
-                        if (data.TryToPrimative(out float f))
+                        if (data.TryReinterpretCast(out float f))
                         {
                             IConvertible flt = f;
                             t = (TResult)flt;
@@ -336,7 +336,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.INT:
-                        if (data.TryToPrimative(out int intt))
+                        if (data.TryReinterpretCast(out int intt))
                         {
                             IConvertible dd = intt;
                             t = (TResult)dd;
@@ -344,7 +344,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.UINT:
-                        if (data.TryToPrimative(out uint uintv))
+                        if (data.TryReinterpretCast(out uint uintv))
                         {
                             IConvertible dd = uintv;
                             t = (TResult)dd;
@@ -352,7 +352,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.LONG:
-                        if (data.TryToPrimative(out long l))
+                        if (data.TryReinterpretCast(out long l))
                         {
                             IConvertible ll = l;
                             t = (TResult)ll;
@@ -360,7 +360,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.ULONG:
-                        if (data.TryToPrimative(out ulong ul))
+                        if (data.TryReinterpretCast(out ulong ul))
                         {
                             IConvertible uul = ul;
                             t = (TResult)uul;
@@ -368,7 +368,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.DOUBLE:
-                        if (data.TryToPrimative(out double dl))
+                        if (data.TryReinterpretCast(out double dl))
                         {
                             IConvertible ddl = dl;
                             t = (TResult)ddl;
@@ -376,7 +376,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.SHORT:
-                        if (data.TryToPrimative(out short s))
+                        if (data.TryReinterpretCast(out short s))
                         {
                             IConvertible ss = s;
                             t = (TResult)ss;
@@ -384,7 +384,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.USHORT:
-                        if (data.TryToPrimative(out ushort us))
+                        if (data.TryReinterpretCast(out ushort us))
                         {
                             IConvertible uus = us;
                             t = (TResult)uus;
@@ -392,7 +392,7 @@ namespace LLDataMan
                         }
                         break;
                     case SupportedPrimativeTypes.BOOL:
-                        if(data.TryToPrimative(out bool b))
+                        if(data.TryReinterpretCast(out bool b))
                         {
                             IConvertible bb = b;
                             t = (TResult)bb;
