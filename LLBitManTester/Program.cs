@@ -1,4 +1,4 @@
-﻿//#define GENERIC_TEST
+﻿#define GENERIC_TEST
 using LLDataMan;
 using System;
 using System.Collections.Generic;

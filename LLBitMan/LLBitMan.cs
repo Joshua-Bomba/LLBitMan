@@ -283,7 +283,7 @@ namespace LLDataMan
             {typeof(bool), SupportedPrimitiveTypes.BOOL }
         };
 
-        public static bool TryGetPrimitiveValue<TResult>(byte[] data, out TResult t) where TResult : struct
+        public static bool TryGetPrimitiveValue<TResult>(byte[] data, out TResult t)
         {
 
             if (data != null && TYPE_MAP.TryGetValue(typeof(TResult), out SupportedPrimitiveTypes type))
