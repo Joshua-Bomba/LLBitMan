@@ -12,13 +12,41 @@ namespace LLBitManTester
     [TestFixture]
     public class ContextTest
     {
-        [Test]
-        public void EnqueDequeTest()
+
+        public class BitMoreComplicatedObject
         {
-            
+            public string AProp { get; set; }
+
+            public object RefObject { get; set; }
         }
 
-        static 
+        [Test]
+        public void BasicTest()
+        {
+            DefaultHttpContext context = new DefaultHttpContext();
+            context.Session.SetObject<int?>("nulltest", null);
+            int? a = context.Session.GetObject<int?>("nulltest");
+
+            int refObj = 14;
+            BitMoreComplicatedObject l1 = new BitMoreComplicatedObject
+            {
+                AProp = "Nested Prop",
+                RefObject = refObj
+            };
+
+            BitMoreComplicatedObject bmco = new BitMoreComplicatedObject
+            {
+                AProp = "Test Prop",
+                RefObject = l1
+            };
+
+            context.Session.SetObject("object", bmco);
+
+            //This will not be the same object
+            BitMoreComplicatedObject result = context.Session.GetObject<BitMoreComplicatedObject>("object");
+
+            TestPrimativeValue(context, 1);
+        }
 
         static void TestPrimativeValue(DefaultHttpContext context, ulong index)
         {
