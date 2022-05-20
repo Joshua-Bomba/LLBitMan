@@ -1,4 +1,4 @@
-﻿using LLDataMan;
+﻿using LLBitMan;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace LLBitManTester
             {
                 bool bl = index != 0;
                 byte[] bla = bl.ToByteArray();
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(bla, out bool rbl));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(bla, out bool rbl));
                 Assert.AreEqual(bl, rbl);
             }
 
@@ -37,9 +37,9 @@ namespace LLBitManTester
                 byte[] sba = sb.ToByteArray();
                 byte[] ga = g.ToByteArray();
 
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ga, out Guid rg));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ba, out byte rb));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(sba, out sbyte rsb));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(ga, out Guid rg));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(ba, out byte rb));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(sba, out sbyte rsb));
                 Assert.AreEqual(b, rb);
                 Assert.AreEqual(g, rg);
                 Assert.AreEqual(sb, rsb);
@@ -54,9 +54,9 @@ namespace LLBitManTester
                 byte[] usa = us.ToByteArray();
                 byte[] ca = c.ToByteArray();
 
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(sa, out short ra));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(usa, out ushort rus));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ca, out char rc));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(sa, out short ra));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(usa, out ushort rus));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(ca, out char rc));
                 Assert.AreEqual(us, rus);
                 Assert.AreEqual(s, ra);
                 Assert.AreEqual(c, rc);
@@ -70,9 +70,9 @@ namespace LLBitManTester
                 byte[] ia = i.ToByteArray();
                 byte[] uia = ui.ToByteArray();
 
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(fa, out float rf));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ia, out int ri));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(uia, out uint rui));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(fa, out float rf));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(ia, out int ri));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(uia, out uint rui));
                 Assert.AreEqual(f, rf);
                 Assert.AreEqual(i, ri);
                 Assert.AreEqual(ui, rui);
@@ -91,10 +91,10 @@ namespace LLBitManTester
                 byte[] la = l.ToByteArray();
                 byte[] ula = ul.ToByteArray();
                 byte[] dla = dl.ToByteArray();
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(da, out decimal rd));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(la, out long rl));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(ula, out ulong rul));
-                Assert.IsTrue(LLDataMan.LLBitMan.TryGetPrimitiveValue(dla, out double rdl));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(da, out decimal rd));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(la, out long rl));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(ula, out ulong rul));
+                Assert.IsTrue(LLByteArrayManager.TryGetPrimitiveValue(dla, out double rdl));
                 Assert.AreEqual(d, rd);
                 Assert.AreEqual(l, rl);
                 Assert.AreEqual(ul, rul);

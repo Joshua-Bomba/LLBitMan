@@ -18,7 +18,7 @@ namespace LLBitMan
                 return;
             }
             
-            if (LLDataMan.LLBitMan.TrySetPrimativeValue(value, out byte[] d))
+            if (LLByteArrayManager.TrySetPrimativeValue(value, out byte[] d))
             {
                 session.Set(key, d);
                 return;
@@ -34,7 +34,7 @@ namespace LLBitMan
             {
                 if (t != null)
                 {
-                    if (LLDataMan.LLBitMan.TryGetPrimitiveValue<TResult>(t, out TResult r))
+                    if (LLByteArrayManager.TryGetPrimitiveValue<TResult>(t, out TResult r))
                     {
                         return r;
                     }
@@ -49,7 +49,7 @@ namespace LLBitMan
             {
                 if(t != null)
                 {
-                    if (LLDataMan.LLBitMan.TryGetPrimitiveValue<TResult>(t, out TResult r))
+                    if (LLByteArrayManager.TryGetPrimitiveValue<TResult>(t, out TResult r))
                     {
                         result = r;
                         return true;
