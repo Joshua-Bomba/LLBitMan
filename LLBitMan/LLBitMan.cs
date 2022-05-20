@@ -283,6 +283,116 @@ namespace LLDataMan
             {typeof(bool), SupportedPrimitiveTypes.BOOL }
         };
 
+        public static bool TrySetPrimativeValue<TProp>(TProp data, out byte[] t)
+        {
+            if (data != null && TYPE_MAP.TryGetValue(typeof(TProp), out SupportedPrimitiveTypes type))
+            {
+                switch (type)
+                {
+                    case SupportedPrimitiveTypes.GUID:
+                        if(data is Guid g)
+                        {
+                            t = g.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.BYTE:
+                        if (data is byte b)
+                        {
+                            t = b.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.SBYTE:
+                        if (data is sbyte sb)
+                        {
+                            t = sb.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.CHAR:
+                        if (data is char c)
+                        {
+                            t = c.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.DEC:
+                        if (data is decimal dec)
+                        {
+                            t = dec.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.FLOAT:
+                        if (data is float f)
+                        {
+                            t = f.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.INT:
+                        if (data is int i)
+                        {
+                            t = i.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.UINT:
+                        if (data is uint ui)
+                        {
+                            t= ui.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.LONG:
+                        if (data is long l)
+                        {
+                            t = l.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.ULONG:
+                        if (data is ulong ul)
+                        {
+                            t = ul.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.DOUBLE:
+                        if (data is double dl)
+                        {
+                            t = dl.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.SHORT:
+                        if (data is short s)
+                        {
+                            t = s.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.USHORT:
+                        if (data is ushort us)
+                        {
+                            t = us.ToByteArray();
+                            return true;
+                        }
+                        break;
+                    case SupportedPrimitiveTypes.BOOL:
+                        if (data is bool bol)
+                        {
+                            t = bol.ToByteArray();
+                            return true;
+                        }
+                        break;
+                }
+            }
+            t = null;
+            return false;
+        }
+
         public static bool TryGetPrimitiveValue<TResult>(byte[] data, out TResult t)
         {
 
