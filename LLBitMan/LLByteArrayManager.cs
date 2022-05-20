@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace LLDataMan
+namespace LLBitMan
 {
-    public static class LLBitMan
+    public static class LLByteArrayManager
     {
         public static byte[] ToByteArray(this bool b) => BitConverter.GetBytes(b);
 
