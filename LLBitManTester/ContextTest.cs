@@ -116,8 +116,8 @@ namespace LLBitManTester
                session.SetObject("guid", g);
                session.SetObject("byte", b);
                 session.SetObject("sbyte", sb);
-                Assert.AreEqual(b, session.GetObject<Guid>("guid"));
-                Assert.AreEqual(g, session.GetObject<byte>("byte"));
+                Assert.AreEqual(g, session.GetObject<Guid>("guid"));
+                Assert.AreEqual(b, session.GetObject<byte>("byte"));
                 Assert.AreEqual(sb, session.GetObject<sbyte>("sbyte"));
             }
             if (index <= ushort.MaxValue)
