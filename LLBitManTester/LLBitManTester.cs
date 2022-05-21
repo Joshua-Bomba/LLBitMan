@@ -13,7 +13,7 @@ namespace LLBitManTester
     [TestFixture]
     public class LLBitManTester
     {
-        private const uint THREAD_SPAWN_DEFAULT = 8;
+        private static readonly uint THREAD_SPAWN_DEFAULT = (uint)Environment.ProcessorCount;
         private static uint INCREMENT = THREAD_SPAWN_DEFAULT;
         private const ulong INTERVAL = 100000000;
         private const ulong UINT_END = uint.MaxValue;
@@ -121,7 +121,7 @@ namespace LLBitManTester
             }
         }
 
-        static void PastUIntMax()
+        static void PastUIntMax(Action<ulong> f)
         {
             ulong endPoint = ulong.MaxValue;
             ulong i = uint.MaxValue;
@@ -130,10 +130,10 @@ namespace LLBitManTester
                 i = (i << 4);
                 for (byte k = 0; k < 15; k++)
                 {
-                    TestValue(i);
+                    f(i);
                     i += 1;
                 }
-                TestValue(i);
+                f(i);
             }
         }
 
@@ -177,36 +177,37 @@ namespace LLBitManTester
                 i += increment;
             }
         }
-        [Test]
-        public void AllPossibleScenerios()
+
+
+        public static void AllPossibleScenerios(Action<ulong> f)
         {
             uint cores = THREAD_SPAWN_DEFAULT;
             Console.WriteLine("Threads Creating: " + cores);
             Thread[] threads = new Thread[cores];
             for (int i = 0; i < threads.Length; i++)
             {
-                if(i == 0)
+                if (i == 0)
                 {
                     threads[i] = new Thread(new ThreadStart(ThreadProcessesTimer));
                 }
                 else
                 {
                     ulong index = (ulong)i;
-                    threads[i] = new Thread(new ThreadStart(()=> ThreadProcesses(index)));
+                    threads[i] = new Thread(new ThreadStart(() => ThreadProcesses(index)));
                 }
 
             }
 
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
-            for (int i = 0;i < threads.Length;i++)
+            for (int i = 0; i < threads.Length; i++)
             {
                 threads[i].Start();
             }
 
-            PastUIntMax();
+            PastUIntMax(f);
 
-            for(int i = 0;i < threads.Length;i++)
+            for (int i = 0; i < threads.Length; i++)
             {
                 threads[i].Join();
             }
@@ -217,6 +218,13 @@ namespace LLBitManTester
             ts.Milliseconds / 10);
             Console.WriteLine("Full Run Time " + elapsedTime);
             stopWatch.Stop();
+        }
+
+
+        [Test]
+        public void StandardAllPossibleScenerion()
+        {
+            AllPossibleScenerios(TestValue);
         }
     }
 }
