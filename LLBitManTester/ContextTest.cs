@@ -42,11 +42,14 @@ namespace LLBitManTester
 
             public void Remove(string key)
             {
+                //removing a key that does not exist is okay on a real session
                 _innerDictionary.Remove(key);
             }
 
             public void Set(string key, byte[] value)
             {
+                //I Check the DistributedSession https://github.dev/dotnet/aspnetcore/tree/02c6de4ba6022025fcda7581415f310f8c73cdc3
+                //and it appaers that it will throw an exception if this is set to null
                 _innerDictionary[key] = value.ToArray();
             }
 

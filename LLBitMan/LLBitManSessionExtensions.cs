@@ -14,7 +14,7 @@ namespace LLBitMan
         {
             if(value == null)
             {
-                session.Set(key, null);
+                session.Remove(key);
                 return;
             }
             
