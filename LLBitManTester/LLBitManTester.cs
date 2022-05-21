@@ -34,7 +34,7 @@ namespace LLBitManTester
             }
         }
 
-        static void TestValue(ulong index)
+        public static void TestValue(ulong index)
         {
             if (index <= 1)
             {
@@ -116,21 +116,6 @@ namespace LLBitManTester
                 Assert.AreEqual(ul, rul);
                 Assert.AreEqual(dl, rdl);
             }
-        }
-
-        [Test]
-        public void OutputTest()
-        {
-            BaseTest.Out("test");
-
-            BaseTest.Out("Test is not finished");
-        }
-
-        [Test]
-        public void StandardAllPossibleScenerios()
-        {
-            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester((ulong i, ulong index) => TestValue(i));
-            t.AllPossibleScenerios();
         }
     }
 }

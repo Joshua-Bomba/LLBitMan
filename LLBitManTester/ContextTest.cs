@@ -16,7 +16,7 @@ namespace LLBitManTester
     {
 
 
-        private class TestSession : ISession//copypasta from https://github.dev/dotnet/aspnetcore/tree/02c6de4ba6022025fcda7581415f310f8c73cdc3
+        public class TestSession : ISession//copypasta from https://github.dev/dotnet/aspnetcore/tree/02c6de4ba6022025fcda7581415f310f8c73cdc3
         {
             private Dictionary<string, byte[]> _innerDictionary = new Dictionary<string, byte[]>();
 
@@ -98,23 +98,8 @@ namespace LLBitManTester
 
             TestPrimativeValue(session, 1);
         }
-        [Test]
-        public void ContextAllPossibleScenerios()
-        {
 
-            TestSession[] session = new TestSession[AllPossibleSceneriosTester.THREAD_SPAWN_DEFAULT + 1];
-            for (int i = 0; i < session.Length; i++)
-                session[i] = new TestSession();
-
-
-            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester((ulong u,ulong index) =>
-            {
-                TestPrimativeValue(session[index], u);
-            });
-            t.AllPossibleScenerios();
-        }
-
-        static void TestPrimativeValue(ISession session, ulong index)
+        public static void TestPrimativeValue(ISession session, ulong index)
         {
             if (index <= 1)
             {
