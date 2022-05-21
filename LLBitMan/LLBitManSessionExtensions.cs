@@ -38,6 +38,17 @@ namespace LLBitMan
                     {
                         return r;
                     }
+                    try
+                    {
+                        string cereal = Encoding.UTF8.GetString(t);
+                       TResult res =  JsonConvert.DeserializeObject<TResult>(cereal);
+                        return res;
+                    }
+                    catch 
+                    {
+
+                    }
+
                 }
             }
             return default(TResult);
