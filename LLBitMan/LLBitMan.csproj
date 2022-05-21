@@ -4,8 +4,14 @@
     <TargetFramework>net6.0</TargetFramework>
     <Authors>Joshua</Authors>
     <Company>LLBitMan</Company>
-    <Description>cast Primitive types to byte arrays and vice versa</Description>
-    <Version>1.1.0</Version>
+    <Description>cast Primitive types to byte arrays and vice versa. Also adds extension methods to ISession to allow for easier storage of primative types</Description>
+    <Version>1.1.1</Version>
+    <SignAssembly>False</SignAssembly>
+    <Copyright>2022</Copyright>
+    <PackageProjectUrl> https://github.com/Joshua-Bomba/LLBitMan</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Joshua-Bomba/LLBitMan</RepositoryUrl>
+    <PackageTags>session;helper;primative;types;storage</PackageTags>
+    <PackageReleaseNotes>Added ISession Support through extension methods</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
