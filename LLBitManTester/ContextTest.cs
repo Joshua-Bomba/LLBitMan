@@ -6,12 +6,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LLBitMan;
+using System.Threading;
 
 namespace LLBitManTester
 {
     [TestFixture]
     public class ContextTest
     {
+
+
+        private class TestSession : ISession//copypasta from https://github.dev/dotnet/aspnetcore/tree/02c6de4ba6022025fcda7581415f310f8c73cdc3
+        {
+            private Dictionary<string, byte[]> _innerDictionary = new Dictionary<string, byte[]>();
+
+            public IEnumerable<string> Keys { get { return _innerDictionary.Keys; } }
+
+            public string Id => "TestId";
+
+            public bool IsAvailable { get; } = true;
+
+            public Task LoadAsync(CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return Task.FromResult(0);
+            }
+
+            public Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
+            {
+                return Task.FromResult(0);
+            }
+
+            public void Clear()
+            {
+                _innerDictionary.Clear();
+            }
+
+            public void Remove(string key)
+            {
+                _innerDictionary.Remove(key);
+            }
+
+            public void Set(string key, byte[] value)
+            {
+                _innerDictionary[key] = value.ToArray();
+            }
+
+            public bool TryGetValue(string key, out byte[] value)
+            {
+                return _innerDictionary.TryGetValue(key, out value);
+            }
+        }
+
 
         public class BitMoreComplicatedObject
         {
@@ -23,9 +67,9 @@ namespace LLBitManTester
         [Test]
         public void BasicTest()
         {
-            DefaultHttpContext context = new DefaultHttpContext();
-            context.Session.SetObject<int?>("nulltest", null);
-            int? a = context.Session.GetObject<int?>("nulltest");
+            TestSession session = new TestSession();
+            session.SetObject<int?>("nulltest", null);
+            int? a = session.GetObject<int?>("nulltest");
 
             int refObj = 14;
             BitMoreComplicatedObject l1 = new BitMoreComplicatedObject
@@ -40,21 +84,21 @@ namespace LLBitManTester
                 RefObject = l1
             };
 
-            context.Session.SetObject("object", bmco);
+            session.SetObject("object", bmco);
 
             //This will not be the same object
-            BitMoreComplicatedObject result = context.Session.GetObject<BitMoreComplicatedObject>("object");
+            BitMoreComplicatedObject result = session.GetObject<BitMoreComplicatedObject>("object");
 
-            TestPrimativeValue(context, 1);
+            TestPrimativeValue(session, 1);
         }
 
-        static void TestPrimativeValue(DefaultHttpContext context, ulong index)
+        static void TestPrimativeValue(ISession session, ulong index)
         {
             if (index <= 1)
             {
                 bool bl = index != 0;
-                context.Session.SetObject("bool", bl);
-                Assert.AreEqual(bl, context.Session.GetObject<bool>("bool"));
+                session.SetObject("bool", bl);
+                Assert.AreEqual(bl, session.GetObject<bool>("bool"));
             }
 
             if (index <= byte.MaxValue)
@@ -63,38 +107,38 @@ namespace LLBitManTester
                 byte b = (byte)index;
                 sbyte sb = (sbyte)index;
 
-                context.Session.SetObject("guid", g);
-                context.Session.SetObject("byte", b);
-                context.Session.SetObject("sbyte", sb);
-                Assert.AreEqual(b, context.Session.GetObject<Guid>("guid"));
-                Assert.AreEqual(g, context.Session.GetObject<byte>("byte"));
-                Assert.AreEqual(sb, context.Session.GetObject<sbyte>("sbyte"));
+               session.SetObject("guid", g);
+               session.SetObject("byte", b);
+                session.SetObject("sbyte", sb);
+                Assert.AreEqual(b, session.GetObject<Guid>("guid"));
+                Assert.AreEqual(g, session.GetObject<byte>("byte"));
+                Assert.AreEqual(sb, session.GetObject<sbyte>("sbyte"));
             }
             if (index <= ushort.MaxValue)
             {
                 short s = (short)index;
                 ushort us = (ushort)index;
                 char c = (char)index;
-                context.Session.SetObject("short", s);
-                context.Session.SetObject("ushort", us);
-                context.Session.SetObject("char", c);
+                session.SetObject("short", s);
+                session.SetObject("ushort", us);
+                session.SetObject("char", c);
 
-                Assert.AreEqual(us, context.Session.GetObject<short>("short"));
-                Assert.AreEqual(s, context.Session.GetObject<ushort>("ushort"));
-                Assert.AreEqual(c, context.Session.GetObject<char>("char"));
+                Assert.AreEqual(us, session.GetObject<short>("short"));
+                Assert.AreEqual(s, session.GetObject<ushort>("ushort"));
+                Assert.AreEqual(c, session.GetObject<char>("char"));
             }
             if (index <= uint.MaxValue)
             {
                 float f = (float)index;
                 int i = (int)index;
                 uint ui = (uint)index;
-                context.Session.SetObject("float", f);
-                context.Session.SetObject("int", i);
-                context.Session.SetObject("uint", ui);
+                session.SetObject("float", f);
+                session.SetObject("int", i);
+                session.SetObject("uint", ui);
 
-                Assert.AreEqual(f, context.Session.GetObject<float>("float"));
-                Assert.AreEqual(i, context.Session.GetObject<int>("int"));
-                Assert.AreEqual(ui, context.Session.GetObject<uint>("uint"));
+                Assert.AreEqual(f, session.GetObject<float>("float"));
+                Assert.AreEqual(i, session.GetObject<int>("int"));
+                Assert.AreEqual(ui, session.GetObject<uint>("uint"));
             }
 
             if (index <= ulong.MaxValue)
@@ -104,15 +148,15 @@ namespace LLBitManTester
                 ulong ul = (ulong)index;
                 double dl = (double)index;
 
-                context.Session.SetObject("decimal", d);
-                context.Session.SetObject("long", l);
-                context.Session.SetObject("ulong", ul);
-                context.Session.SetObject("double", dl);
+                session.SetObject("decimal", d);
+                session.SetObject("long", l);
+                session.SetObject("ulong", ul);
+                session.SetObject("double", dl);
 
-                Assert.AreEqual(d, context.Session.GetObject<decimal>("decimal"));
-                Assert.AreEqual(l, context.Session.GetObject<long>("long"));
-                Assert.AreEqual(ul, context.Session.GetObject<ulong>("ulong"));
-                Assert.AreEqual(dl, context.Session.GetObject<double>("double"));
+                Assert.AreEqual(d, session.GetObject<decimal>("decimal"));
+                Assert.AreEqual(l, session.GetObject<long>("long"));
+                Assert.AreEqual(ul,session.GetObject<ulong>("ulong"));
+                Assert.AreEqual(dl, session.GetObject<double>("double"));
             }
         }
 
