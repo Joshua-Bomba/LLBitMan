@@ -71,6 +71,9 @@ namespace LLBitManTester
             session.SetObject<int?>("nulltest", null);
             int? a = session.GetObject<int?>("nulltest");
 
+            session.SetObject<object>("nulltest2", null);
+            object? nt2 = session.GetObject<object>("nulltest2");
+
             int refObj = 14;
             BitMoreComplicatedObject l1 = new BitMoreComplicatedObject
             {
