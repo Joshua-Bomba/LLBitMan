@@ -24,7 +24,7 @@ namespace LLBitManTester
 
         public static void Out(string s)
         {
-            TestContext.Progress.WriteLine(s);
+            System.Diagnostics.Debug.WriteLine(s);
         }
 
     }
