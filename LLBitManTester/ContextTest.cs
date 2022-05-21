@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using LLBitMan;
 using System.Threading;
 using System.Diagnostics;
+using System.IO;
 
 namespace LLBitManTester
 {
@@ -97,6 +98,33 @@ namespace LLBitManTester
             BitMoreComplicatedObject result = session.GetObject<BitMoreComplicatedObject>("object");
 
             TestPrimativeValue(session, 1);
+        }
+        [Test]
+        public void SetInvalidPrimativeTest()
+        {
+            TestSession session = new TestSession();
+            BitMoreComplicatedObject bmco = new BitMoreComplicatedObject
+            {
+                AProp = "Test Prop",
+                RefObject = "Bagle"
+            };
+
+            Assert.Throws<InvalidDataException>(() => session.SetPrimative("objectInvalidTest", bmco));
+            Assert.IsFalse(session.TrySetPrimative("objectInvalidTest", bmco));
+        }
+        [Test]
+        public void DataMisMatch()
+        {
+            uint v = 12451;
+            TestSession session = new TestSession();
+            session.SetPrimative("testDataMismatch", v);
+            Assert.IsFalse(session.TryGetObject("testDataMismatch",out BitMoreComplicatedObject o));
+            Assert.AreEqual(null, session.GetObject<BitMoreComplicatedObject>("testDataMismatch"));
+            Assert.IsFalse(session.TryGetPrimative<long>("testDataMismatch", out long f));
+            Assert.IsFalse(session.TryGetObject<long>("testDataMismatch", out long f2));
+
+
+
         }
 
         public static void TestPrimativeValue(ISession session, ulong index)
