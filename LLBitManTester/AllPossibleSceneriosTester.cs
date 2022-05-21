@@ -14,8 +14,8 @@ namespace LLBitManTester
         private static uint INCREMENT = THREAD_SPAWN_DEFAULT;
         private const ulong INTERVAL = 100000000;
         private const ulong UINT_END = uint.MaxValue;
-        private Action<ulong> _f;
-        public AllPossibleSceneriosTester(Action<ulong> f)
+        private Action<ulong,ulong> _f;
+        public AllPossibleSceneriosTester(Action<ulong,ulong> f)
         {
             _f = f;
         }
@@ -27,13 +27,14 @@ namespace LLBitManTester
             Thread[] threads = new Thread[cores];
             for (int i = 0; i < threads.Length; i++)
             {
+                ulong index = (ulong)i;
                 if (i == 0)
                 {
-                    threads[i] = new Thread(new ThreadStart(ThreadProcessesTimer));
+                    threads[i] = new Thread(new ThreadStart(() => ThreadProcessesTimer(index)));
                 }
                 else
                 {
-                    ulong index = (ulong)i;
+                    
                     threads[i] = new Thread(new ThreadStart(() => ThreadProcesses(index)));
                 }
 
@@ -70,14 +71,14 @@ namespace LLBitManTester
                 i = (i << 4);
                 for (byte k = 0; k < 15; k++)
                 {
-                    _f(i);
+                    _f(i, THREAD_SPAWN_DEFAULT);
                     i += 1;
                 }
-                _f(i);
+                _f(i, THREAD_SPAWN_DEFAULT);
             }
         }
 
-        protected void ThreadProcessesTimer()
+        protected void ThreadProcessesTimer(ulong index)
         {
             Stopwatch stopWatch = new Stopwatch();
             ulong i = 0;
@@ -89,7 +90,7 @@ namespace LLBitManTester
                 stopWatch.Start();
                 while (i <= endTimerPoint)
                 {
-                    _f(i);
+                    _f(i,index);
                     i += INCREMENT;
                 }
 
@@ -113,7 +114,7 @@ namespace LLBitManTester
             ulong endPoint = UINT_END;
             while (i <= endPoint)
             {
-                _f(i);
+                _f(i,start);
                 i += increment;
             }
         }

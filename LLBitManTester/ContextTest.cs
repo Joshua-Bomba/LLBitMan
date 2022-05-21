@@ -102,15 +102,13 @@ namespace LLBitManTester
         public void ContextAllPossibleScenerios()
         {
 
-            TestSession[] session = new TestSession[AllPossibleSceneriosTester.THREAD_SPAWN_DEFAULT];
+            TestSession[] session = new TestSession[AllPossibleSceneriosTester.THREAD_SPAWN_DEFAULT + 1];
             for (int i = 0; i < session.Length; i++)
                 session[i] = new TestSession();
 
-            ulong modOp = AllPossibleSceneriosTester.THREAD_SPAWN_DEFAULT;
 
-            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester((ulong u) =>
+            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester((ulong u,ulong index) =>
             {
-                ulong index = (u % modOp);
                 TestPrimativeValue(session[index], u);
             });
             t.AllPossibleScenerios();

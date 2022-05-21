@@ -129,7 +129,7 @@ namespace LLBitManTester
         [Test]
         public void StandardAllPossibleScenerios()
         {
-            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester(TestValue);
+            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester((ulong i, ulong index) => TestValue(i));
             t.AllPossibleScenerios();
         }
     }
