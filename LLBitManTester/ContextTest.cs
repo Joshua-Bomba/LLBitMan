@@ -97,6 +97,23 @@ namespace LLBitManTester
 
             TestPrimativeValue(session, 1);
         }
+        [Test]
+        public void ContextAllPossibleScenerios()
+        {
+
+            TestSession[] session = new TestSession[AllPossibleSceneriosTest.THREAD_SPAWN_DEFAULT];
+            for (int i = 0; i < session.Length; i++)
+                session[i] = new TestSession();
+
+            ulong modOp = AllPossibleSceneriosTest.THREAD_SPAWN_DEFAULT;
+
+            AllPossibleSceneriosTest t = new AllPossibleSceneriosTest((ulong u) =>
+            {
+                ulong index = (u % modOp);
+                TestPrimativeValue(session[index], u);
+            });
+            t.AllPossibleScenerios();
+        }
 
         static void TestPrimativeValue(ISession session, ulong index)
         {
@@ -129,8 +146,8 @@ namespace LLBitManTester
                 session.SetObject("ushort", us);
                 session.SetObject("char", c);
 
-                Assert.AreEqual(us, session.GetObject<short>("short"));
-                Assert.AreEqual(s, session.GetObject<ushort>("ushort"));
+                Assert.AreEqual(s, session.GetObject<short>("short"));
+                Assert.AreEqual(us, session.GetObject<ushort>("ushort"));
                 Assert.AreEqual(c, session.GetObject<char>("char"));
             }
             if (index <= uint.MaxValue)

@@ -118,14 +118,8 @@ namespace LLBitManTester
             }
         }
 
-       
-
-
-        
-
-
         [Test]
-        public void StandardAllPossibleScenerion()
+        public void StandardAllPossibleScenerios()
         {
             AllPossibleSceneriosTest t = new AllPossibleSceneriosTest(TestValue);
             t.AllPossibleScenerios();
