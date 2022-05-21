@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace LLBitManTester
 {
     [TestFixture]
-    public class LLBitManTester
+    public class LLBitManTester : BaseTest
     {
 
 
@@ -119,9 +119,17 @@ namespace LLBitManTester
         }
 
         [Test]
+        public void OutputTest()
+        {
+            BaseTest.Out("test");
+
+            BaseTest.Out("Test is not finished");
+        }
+
+        [Test]
         public void StandardAllPossibleScenerios()
         {
-            AllPossibleSceneriosTest t = new AllPossibleSceneriosTest(TestValue);
+            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester(TestValue);
             t.AllPossibleScenerios();
         }
     }

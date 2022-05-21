@@ -7,11 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using LLBitMan;
 using System.Threading;
+using System.Diagnostics;
 
 namespace LLBitManTester
 {
     [TestFixture]
-    public class ContextTest
+    public class ContextTest : BaseTest
     {
 
 
@@ -101,13 +102,13 @@ namespace LLBitManTester
         public void ContextAllPossibleScenerios()
         {
 
-            TestSession[] session = new TestSession[AllPossibleSceneriosTest.THREAD_SPAWN_DEFAULT];
+            TestSession[] session = new TestSession[AllPossibleSceneriosTester.THREAD_SPAWN_DEFAULT];
             for (int i = 0; i < session.Length; i++)
                 session[i] = new TestSession();
 
-            ulong modOp = AllPossibleSceneriosTest.THREAD_SPAWN_DEFAULT;
+            ulong modOp = AllPossibleSceneriosTester.THREAD_SPAWN_DEFAULT;
 
-            AllPossibleSceneriosTest t = new AllPossibleSceneriosTest((ulong u) =>
+            AllPossibleSceneriosTester t = new AllPossibleSceneriosTester((ulong u) =>
             {
                 ulong index = (u % modOp);
                 TestPrimativeValue(session[index], u);

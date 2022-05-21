@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace LLBitManTester
 {
     [TestFixture]
-    public class WrappedTest
+    public class WrappedTest : BaseTest
     {
         [Test]
         public void WrappedContentScenerio()
