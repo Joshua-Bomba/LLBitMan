@@ -21,6 +21,7 @@ namespace LLBitMan
             else if (LLByteArrayManager.TrySetPrimativeValue(value, out byte[] d))
             {
                 session.Set(key, d);
+                return;
             }
 
             throw new InvalidDataException();
