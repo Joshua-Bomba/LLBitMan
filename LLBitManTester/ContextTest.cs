@@ -68,16 +68,44 @@ namespace LLBitManTester
 
             public object RefObject { get; set; }
         }
+        [Test]
+        public void NullTest()
+        {
+            TestSession session = new TestSession();
+            {
+                session.SetObject<int?>("nulltest", null);
+                int? a = session.GetObject<int?>("nulltest");
+                Assert.IsNull(a);
+            }
+            {
+                session.SetObject<object>("nulltest", null);
+                object? a = session.GetObject<int?>("nulltest");
+                Assert.IsNull(a);
+            }
+            {
+                Assert.IsFalse(session.TryGetObject("nulltest", out object o));
+            }
+            {
+                //this should still work since it's null
+                session.SetPrimative<int?>("nulltest", null);
+                int? a = session.GetPrimative<int?>("nulltest");
+                Assert.IsNull(a);
+                Assert.IsFalse(session.TryGetPrimative("nulltest", out int? t));
+            }
+            {
+                //this should still work since it's null
+                session.SetPrimative<object>("nulltest", null);
+                object? a = session.GetPrimative<int?>("nulltest");
+                Assert.IsNull(a);
+                Assert.IsFalse(session.TryGetPrimative("nulltest", out object t));
+
+            }
+        }
 
         [Test]
         public void BasicTest()
         {
             TestSession session = new TestSession();
-            session.SetObject<int?>("nulltest", null);
-            int? a = session.GetObject<int?>("nulltest");
-
-            session.SetObject<object>("nulltest2", null);
-            object? nt2 = session.GetObject<object>("nulltest2");
 
             int refObj = 14;
             BitMoreComplicatedObject l1 = new BitMoreComplicatedObject
@@ -97,7 +125,8 @@ namespace LLBitManTester
             //This will not be the same object
             BitMoreComplicatedObject result = session.GetObject<BitMoreComplicatedObject>("object");
 
-            TestPrimativeValue(session, 1);
+            TestPrimativeValue(new StandardSessionMap(session), 1);
+            TestPrimativeValue(new AlternativeSessionMap(session), 1);
         }
         [Test]
         public void SetInvalidPrimativeTest()
@@ -118,16 +147,50 @@ namespace LLBitManTester
             uint v = 12451;
             TestSession session = new TestSession();
             session.SetPrimative("testDataMismatch", v);
-            Assert.IsFalse(session.TryGetObject("testDataMismatch",out BitMoreComplicatedObject o));
+            Assert.IsFalse(session.TryGetObject("testDataMismatch", out BitMoreComplicatedObject o));
             Assert.AreEqual(null, session.GetObject<BitMoreComplicatedObject>("testDataMismatch"));
             Assert.IsFalse(session.TryGetPrimative<long>("testDataMismatch", out long f));
             Assert.IsFalse(session.TryGetObject<long>("testDataMismatch", out long f2));
-
-
-
         }
 
-        public static void TestPrimativeValue(ISession session, ulong index)
+        public class StandardSessionMap : ISessionPropMapper
+        {
+            private ISession _s;
+            public StandardSessionMap(ISession s)
+            {
+                _s = s;
+            }
+
+            public TResult GetObject<TResult>(string key) => _s.GetObject<TResult>(key);
+
+            public void SetObject<TProp>(string key, TProp value) => _s.SetObject<TProp>(key, value);
+
+            public bool TryGetObject<TResult>(string key, out TResult result) => _s.TryGetObject<TResult>(key, out result);
+        }
+
+        public class AlternativeSessionMap : ISessionPropMapper
+        {
+            private ISession _s;
+            public AlternativeSessionMap(ISession s)
+            {
+                _s = s;
+            }
+            public TResult GetObject<TResult>(string key) => _s.GetPrimative<TResult>(key);
+
+            public void SetObject<TProp>(string key, TProp value) => _s.SetPrimative<TProp>(key, value);
+
+            public bool TryGetObject<TResult>(string key, out TResult result) => _s.TryGetObject(key, out result);
+        }
+
+        public interface ISessionPropMapper
+        {
+            void SetObject<TProp>(string key, TProp value);
+            TResult GetObject<TResult>(string key);
+            bool TryGetObject<TResult>(string key, out TResult result);
+        }
+
+
+        public static void TestPrimativeValue(ISessionPropMapper session, ulong index)
         {
             if (index <= 1)
             {
@@ -148,6 +211,9 @@ namespace LLBitManTester
                 Assert.AreEqual(g, session.GetObject<Guid>("guid"));
                 Assert.AreEqual(b, session.GetObject<byte>("byte"));
                 Assert.AreEqual(sb, session.GetObject<sbyte>("sbyte"));
+                Assert.IsTrue(session.TryGetObject("guid", out Guid _));
+                Assert.IsTrue(session.TryGetObject("byte", out byte _));
+                Assert.IsTrue(session.TryGetObject("sbyte", out sbyte _));
             }
             if (index <= ushort.MaxValue)
             {
@@ -161,6 +227,9 @@ namespace LLBitManTester
                 Assert.AreEqual(s, session.GetObject<short>("short"));
                 Assert.AreEqual(us, session.GetObject<ushort>("ushort"));
                 Assert.AreEqual(c, session.GetObject<char>("char"));
+                Assert.IsTrue(session.TryGetObject("short", out short _));
+                Assert.IsTrue(session.TryGetObject("ushort", out ushort _));
+                Assert.IsTrue(session.TryGetObject("char", out char _));
             }
             if (index <= uint.MaxValue)
             {
@@ -174,6 +243,9 @@ namespace LLBitManTester
                 Assert.AreEqual(f, session.GetObject<float>("float"));
                 Assert.AreEqual(i, session.GetObject<int>("int"));
                 Assert.AreEqual(ui, session.GetObject<uint>("uint"));
+                Assert.IsTrue(session.TryGetObject("float", out float _));
+                Assert.IsTrue(session.TryGetObject("int", out int _));
+                Assert.IsTrue(session.TryGetObject("uint", out uint _));
             }
 
             if (index <= ulong.MaxValue)
@@ -192,6 +264,10 @@ namespace LLBitManTester
                 Assert.AreEqual(l, session.GetObject<long>("long"));
                 Assert.AreEqual(ul,session.GetObject<ulong>("ulong"));
                 Assert.AreEqual(dl, session.GetObject<double>("double"));
+                Assert.IsTrue(session.TryGetObject("decimal", out decimal _));
+                Assert.IsTrue(session.TryGetObject("long", out long _));
+                Assert.IsTrue(session.TryGetObject("ulong", out ulong _));
+                Assert.IsTrue(session.TryGetObject("double", out double _));
             }
         }
 
